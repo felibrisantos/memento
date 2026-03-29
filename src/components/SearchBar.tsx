@@ -2,24 +2,31 @@ import { useState, useRef, useEffect } from 'react';
 import { Search, X, Loader2, AlertTriangle } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { searchFns, isMovieConfigured } from '../lib/api';
+import type { Category, SearchResult } from '../types';
 
-export default function SearchBar({ type, onAdd, isInCollection }) {
+interface SearchBarProps {
+  type: Category;
+  onAdd: (type: Category, item: SearchResult) => void;
+  isInCollection: (type: Category, id: string) => boolean;
+}
+
+export default function SearchBar({ type, onAdd, isInCollection }: SearchBarProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
-  const timerRef = useRef(null);
-  const containerRef = useRef(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const needsConfig = (type === 'movies' || type === 'tvshows') && !isMovieConfigured();
 
   useEffect(() => {
-    function handleClickOutside(e) {
-      if (containerRef.current && !containerRef.current.contains(e.target)) {
+    function handleClickOutside(e: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setOpen(false);
       }
     }
-    function handleKeyDown(e) {
+    function handleKeyDown(e: KeyboardEvent) {
       if (e.key === 'Escape') {
         setOpen(false);
       }
@@ -32,7 +39,7 @@ export default function SearchBar({ type, onAdd, isInCollection }) {
     };
   }, []);
 
-  function handleInput(val) {
+  function handleInput(val: string) {
     setQuery(val);
     if (timerRef.current) clearTimeout(timerRef.current);
     if (val.trim().length < 2) {
@@ -55,7 +62,7 @@ export default function SearchBar({ type, onAdd, isInCollection }) {
     }, 400);
   }
 
-  function handleSelect(item) {
+  function handleSelect(item: SearchResult) {
     if (!isInCollection(type, item.id)) {
       onAdd(type, item);
     }

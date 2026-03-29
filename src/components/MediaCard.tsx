@@ -2,11 +2,19 @@ import { Star, Trash2, Edit3, X, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useState } from 'react';
 import { getStatusesFor, getStatusLabel, getStatusColor } from '../lib/storage';
+import type { CollectionItem, Category, Status } from '../types';
 
-export default function MediaCard({ item, type, onRemove, onUpdate }) {
+interface MediaCardProps {
+  item: CollectionItem;
+  type: Category;
+  onRemove: (type: Category, id: string) => void;
+  onUpdate: (type: Category, id: string, updates: Partial<CollectionItem>) => void;
+}
+
+export default function MediaCard({ item, type, onRemove, onUpdate }: MediaCardProps) {
   const [editing, setEditing] = useState(false);
   const [editNotes, setEditNotes] = useState(item.notes || '');
-  const [editStatus, setEditStatus] = useState(item.status || 'completed');
+  const [editStatus, setEditStatus] = useState<Status>(item.status || 'completed');
   const [hovered, setHovered] = useState(false);
 
   const statuses = getStatusesFor(type);
@@ -16,7 +24,7 @@ export default function MediaCard({ item, type, onRemove, onUpdate }) {
     setEditing(false);
   }
 
-  function handleRate(rating) {
+  function handleRate(rating: number | null) {
     onUpdate(type, item.id, { rating });
   }
 
@@ -113,7 +121,7 @@ export default function MediaCard({ item, type, onRemove, onUpdate }) {
           <label className="text-[10px] font-mono text-text-dim tracking-wider uppercase mb-1">Status</label>
           <select
             value={editStatus}
-            onChange={e => setEditStatus(e.target.value)}
+            onChange={e => setEditStatus(e.target.value as Status)}
             className="bg-card border border-border rounded-md px-2 py-1.5 text-xs text-text mb-3 focus:outline-none focus:border-accent/40"
           >
             {statuses.map(s => (

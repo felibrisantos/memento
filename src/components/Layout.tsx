@@ -1,11 +1,17 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
-import { Film, Tv, Disc3, BookOpen, Library, Menu, X, LogOut } from 'lucide-react';
+import { Film, Tv, Disc3, BookOpen, Library, Menu, X, LogOut, type LucideIcon } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useCollection } from '../hooks/useCollection';
 import { useAuth } from '../contexts/AuthContext';
 
-const navItems = [
+interface NavItem {
+  path: string;
+  label: string;
+  icon: LucideIcon;
+}
+
+const navItems: NavItem[] = [
   { path: '/', label: 'Library', icon: Library },
   { path: '/movies', label: 'Film', icon: Film },
   { path: '/tvshows', label: 'TV', icon: Tv },
