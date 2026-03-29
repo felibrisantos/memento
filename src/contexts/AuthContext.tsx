@@ -1,10 +1,16 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { supabase } from '../lib/supabase';
+import type { AuthContextValue } from '../types';
+import type { Session, AuthResponse } from '@supabase/supabase-js';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext<AuthContextValue | null>(null);
 
-export function AuthProvider({ children }) {
-  const [session, setSession] = useState(null);
+interface AuthProviderProps {
+  children: ReactNode;
+}
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,14 +28,15 @@ export function AuthProvider({ children }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  const signUp = (email, password) =>
+  const signUp = (email: string, password: string): Promise<AuthResponse> =>
     supabase.auth.signUp({ email, password });
 
-  const signIn = (email, password) =>
+  const signIn = (email: string, password: string): Promise<AuthResponse> =>
     supabase.auth.signInWithPassword({ email, password });
 
-  const signOut = () =>
-    supabase.auth.signOut();
+  const signOut = async (): Promise<void> => {
+    await supabase.auth.signOut();
+  };
 
   const user = session?.user ?? null;
 
@@ -40,7 +47,7 @@ export function AuthProvider({ children }) {
   );
 }
 
-export function useAuth() {
+export function useAuth(): AuthContextValue {
   const ctx = useContext(AuthContext);
   if (!ctx) throw new Error('useAuth must be used within AuthProvider');
   return ctx;
