@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme {
+  --color-void: #0a0a0a;
+  --color-surface: #111111;
+  --color-card: #181818;
+  --color-card-hover: #1f1f1f;
+  --color-border: #2a2a2a;
+  --color-border-light: #333333;
+  --color-accent: #e8c468;
+  --color-accent-dim: #b89a4a;
+  --color-accent-glow: rgba(232, 196, 104, 0.15);
+  --color-text: #e8e4de;
+  --color-text-muted: #7a7670;
+  --color-text-dim: #4a4743;
+  --color-red: #c45c5c;
+  --color-green: #5cc47a;
+  --color-blue: #5c8cc4;
+  --color-purple: #9c6cc4;
+
+  --font-display: "Instrument Serif", Georgia, serif;
+  --font-body: "Syne", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-light) transparent;
+}
+
+body {
+  margin: 0;
+  background: var(--color-void);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-void);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232, 196, 104, 0.2); }
+  50% { box-shadow: 0 0 20px 4px rgba(232, 196, 104, 0.1); }
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-border-light); border-radius: 3px; }
