@@ -21,7 +21,24 @@
       "Bash(del:*)",
       "mcp__web-reader__webReader",
       "Bash(npm uninstall:*)",
-      "Bash(npx shadcn@latest init:*)"
+      "Bash(npx shadcn@latest init:*)",
+      "Bash(npm ls:*)",
+      "Bash(npx shadcn@latest add:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(powershell -Command \"Get-Date\")",
+      "Bash(powershell:*)",
+      "Bash(\",\n  \"import { motion } from \" + String.fromCharCode\\(39\\) + \"motion/react\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { useState } from \" + String.fromCharCode\\(39\\) + \"react\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { getStatusesFor, getStatusLabel, getStatusColor } from \" + String.fromCharCode\\(39\\) + \"@/lib/storage\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { Button } from \" + String.fromCharCode\\(39\\) + \"@/components/ui/button\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { Badge } from \" + String.fromCharCode\\(39\\) + \"@/components/ui/badge\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { Input } from \" + String.fromCharCode\\(39\\) + \"@/components/ui/input\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { Textarea } from \" + String.fromCharCode\\(39\\) + \"@/components/ui/textarea\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n  \"import { Separator } from \" + String.fromCharCode\\(39\\) + \"@/components/ui/separator\" + String.fromCharCode\\(39\\) + \")",
+      "Bash(\",\n].join\\(\"n\"\\);\nconsole.log\\(\"Test length:\", content.length\\);\n''@\n\n[System.IO.File]::WriteAllText\\(''C:/Users/felib/Documentos/media-tracker/_write.js'', $scriptContent\\)\n\")",
+      "Bash(npm run lint)",
+      "Bash(npx vite build:*)"
     ]
   }
 }

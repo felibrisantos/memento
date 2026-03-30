@@ -1,6 +1,14 @@
-import type { Category, Collection, CollectionItem, Status, StatusConfig, StatusEntry, StatusOption } from '../types';
+import type {
+  Category,
+  Collection,
+  CollectionItem,
+  Status,
+  StatusConfig,
+  StatusEntry,
+  StatusOption,
+} from "../types";
 
-const STORAGE_KEY = 'memento_collection';
+const STORAGE_KEY = "memento_collection";
 
 const EMPTY_COLLECTION: Collection = {
   movies: [],
@@ -11,28 +19,28 @@ const EMPTY_COLLECTION: Collection = {
 
 export const STATUS_CONFIG: StatusConfig = {
   movies: {
-    completed: { label: 'Watched', color: 'text-green' },
+    completed: { label: "Assistido", color: "text-green" },
     in_progress: null,
-    planned: { label: 'Want to watch', color: 'text-accent' },
-    dropped: { label: 'Dropped', color: 'text-red' },
+    planned: { label: "Quero assistir", color: "text-gold" },
+    dropped: { label: "Abandonado", color: "text-red" },
   },
   tvshows: {
-    completed: { label: 'Completed', color: 'text-green' },
-    in_progress: { label: 'Watching', color: 'text-blue' },
-    planned: { label: 'Plan to watch', color: 'text-accent' },
-    dropped: { label: 'Dropped', color: 'text-red' },
+    completed: { label: "Concluído", color: "text-green" },
+    in_progress: { label: "Assistindo", color: "text-blue" },
+    planned: { label: "Planejado", color: "text-gold" },
+    dropped: { label: "Abandonado", color: "text-red" },
   },
   albums: {
-    completed: { label: 'Listened', color: 'text-green' },
-    in_progress: { label: 'Listening', color: 'text-blue' },
-    planned: { label: 'Want to listen', color: 'text-accent' },
-    dropped: { label: 'Dropped', color: 'text-red' },
+    completed: { label: "Ouvido", color: "text-green" },
+    in_progress: { label: "Ouvindo", color: "text-blue" },
+    planned: { label: "Quero ouvir", color: "text-gold" },
+    dropped: { label: "Abandonado", color: "text-red" },
   },
   books: {
-    completed: { label: 'Read', color: 'text-green' },
-    in_progress: { label: 'Reading', color: 'text-blue' },
-    planned: { label: 'Want to read', color: 'text-accent' },
-    dropped: { label: 'Dropped', color: 'text-red' },
+    completed: { label: "Lido", color: "text-green" },
+    in_progress: { label: "Lendo", color: "text-blue" },
+    planned: { label: "Quero ler", color: "text-gold" },
+    dropped: { label: "Abandonado", color: "text-red" },
   },
 };
 
@@ -41,7 +49,10 @@ function getItems(collection: Collection, type: Category): CollectionItem[] {
 }
 
 export function getStatusesFor(type: Category): StatusOption[] {
-  const entries = Object.entries(STATUS_CONFIG[type] ?? {}) as [Status, StatusEntry | null][];
+  const entries = Object.entries(STATUS_CONFIG[type] ?? {}) as [
+    Status,
+    StatusEntry | null,
+  ][];
   return entries
     .filter((entry): entry is [Status, StatusEntry] => entry[1] !== null)
     .map(([key, val]) => ({ value: key, label: val.label, color: val.color }));
@@ -52,7 +63,7 @@ export function getStatusLabel(type: Category, status: Status): string {
 }
 
 export function getStatusColor(type: Category, status: Status): string {
-  return STATUS_CONFIG[type]?.[status]?.color ?? 'text-text-muted';
+  return STATUS_CONFIG[type]?.[status]?.color ?? "text-text-muted";
 }
 
 export function loadCollection(): Collection {
@@ -61,8 +72,11 @@ export function loadCollection(): Collection {
     if (!data) return { ...EMPTY_COLLECTION };
     const collection: Collection = JSON.parse(data);
     for (const type of Object.keys(collection) as Category[]) {
-      collection[type] = getItems(collection, type).map((item: CollectionItem) =>
-        item.status === ('watching' as Status) ? { ...item, status: 'in_progress' as Status } : item
+      collection[type] = getItems(collection, type).map(
+        (item: CollectionItem) =>
+          item.status === ("watching" as Status)
+            ? { ...item, status: "in_progress" as Status }
+            : item,
       );
     }
     return collection;
@@ -75,21 +89,38 @@ export function saveCollection(collection: Collection): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(collection));
 }
 
-export function addToCollection(collection: Collection, type: Category, item: CollectionItem): Collection {
+export function addToCollection(
+  collection: Collection,
+  type: Category,
+  item: CollectionItem,
+): Collection {
   const items = getItems(collection, type);
-  const exists = items.some(i => i.id === item.id);
+  const exists = items.some((i) => i.id === item.id);
   if (exists) return collection;
-  const defaultStatus: Status = type === 'movies' ? 'completed' : 'planned';
+  const defaultStatus: Status = type === "movies" ? "completed" : "planned";
   return {
     ...collection,
-    [type]: [...items, { ...item, addedAt: Date.now(), status: defaultStatus, rating: null, notes: '' }],
+    [type]: [
+      ...items,
+      {
+        ...item,
+        addedAt: Date.now(),
+        status: defaultStatus,
+        rating: null,
+        notes: "",
+      },
+    ],
   };
 }
 
-export function removeFromCollection(collection: Collection, type: Category, id: string): Collection {
+export function removeFromCollection(
+  collection: Collection,
+  type: Category,
+  id: string,
+): Collection {
   return {
     ...collection,
-    [type]: getItems(collection, type).filter(i => i.id !== id),
+    [type]: getItems(collection, type).filter((i) => i.id !== id),
   };
 }
 
@@ -97,10 +128,12 @@ export function updateItem(
   collection: Collection,
   type: Category,
   id: string,
-  updates: Partial<Pick<CollectionItem, 'status' | 'rating' | 'notes'>>
+  updates: Partial<Pick<CollectionItem, "status" | "rating" | "notes">>,
 ): Collection {
   return {
     ...collection,
-    [type]: getItems(collection, type).map(i => i.id === id ? { ...i, ...updates } : i),
+    [type]: getItems(collection, type).map((i) =>
+      i.id === id ? { ...i, ...updates } : i,
+    ),
   };
 }

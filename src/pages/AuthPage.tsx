@@ -1,24 +1,24 @@
-import { useState, type FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { useAuth } from '../contexts/AuthContext';
-import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
-import { emailSchema, passwordSchema } from '../types/validation';
+import { ArrowRight, Loader2, Lock, Mail } from "lucide-react";
+import { motion } from "motion/react";
+import { useState, type FormEvent } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
+import { emailSchema, passwordSchema } from "../types/validation";
 
 export default function AuthPage() {
   const { signIn, signUp } = useAuth();
   const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState('');
+  const [success, setSuccess] = useState("");
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>): Promise<void> {
     e.preventDefault();
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
     setLoading(true);
 
     // Validate with Zod before calling Supabase
@@ -26,13 +26,13 @@ export default function AuthPage() {
     const passwordResult = passwordSchema.safeParse(password);
 
     if (!emailResult.success) {
-      setError('Invalid email or password.');
+      setError("E-mail ou senha inválidos.");
       setLoading(false);
       return;
     }
 
     if (!passwordResult.success) {
-      setError('Invalid email or password.');
+      setError("E-mail ou senha inválidos.");
       setLoading(false);
       return;
     }
@@ -42,78 +42,100 @@ export default function AuthPage() {
 
     if (authError) {
       // Generic error messages to prevent user enumeration
-      setError(isSignUp ? 'Could not create account. Please try again.' : 'Invalid email or password.');
+      setError(
+        isSignUp
+          ? "Não foi possível criar a conta. Tente novamente."
+          : "E-mail ou senha inválidos.",
+      );
     } else if (isSignUp) {
-      setSuccess('Check your email to confirm your account.');
+      setSuccess("Verifique seu e-mail para confirmar sua conta.");
     } else {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
     }
     setLoading(false);
   }
 
   return (
     <div
-      className="min-h-screen flex items-center justify-center px-4"
-      style={{ background: 'linear-gradient(180deg, #0e0e0e 0%, #0a0a0a 100%)' }}
+      className="min-h-screen flex items-center justify-center px-6"
+      style={{
+        background: "linear-gradient(180deg, #0e0e0e 0%, #0a0a0a 100%)",
+      }}
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-sm"
+        className="w-full max-w-[400px]"
       >
         {/* Logo */}
-        <div className="text-center mb-10">
-          <h1 className="font-display text-4xl text-accent tracking-tight">
+        <div className="text-center mb-12">
+          <h1 className="font-display text-[2.75rem] text-gold tracking-tight leading-none">
             MEMENTO
           </h1>
-          <p className="text-[10px] font-mono text-text-dim tracking-[0.3em] mt-1 uppercase">
-            Personal archive
+          <p className="text-sm font-mono text-text-muted tracking-[0.25em] mt-3 uppercase">
+            Arquivo pessoal
           </p>
         </div>
 
         {/* Toggle */}
         <div className="flex mb-8 bg-card rounded-lg border border-border p-1">
           <button
-            onClick={() => { setIsSignUp(false); setError(''); setSuccess(''); }}
-            className={`flex-1 py-2 text-xs font-mono tracking-wider uppercase rounded-md transition-all ${
-              !isSignUp ? 'bg-accent text-void' : 'text-text-muted hover:text-text'
+            onClick={() => {
+              setIsSignUp(false);
+              setError("");
+              setSuccess("");
+            }}
+            className={`flex-1 py-2.5 text-base font-mono tracking-wider uppercase rounded-md transition-all ${
+              !isSignUp
+                ? "bg-gold text-void"
+                : "text-text-muted hover:text-text"
             }`}
           >
-            Sign in
+            Entrar
           </button>
           <button
-            onClick={() => { setIsSignUp(true); setError(''); setSuccess(''); }}
-            className={`flex-1 py-2 text-xs font-mono tracking-wider uppercase rounded-md transition-all ${
-              isSignUp ? 'bg-accent text-void' : 'text-text-muted hover:text-text'
+            onClick={() => {
+              setIsSignUp(true);
+              setError("");
+              setSuccess("");
+            }}
+            className={`flex-1 py-2.5 text-base font-mono tracking-wider uppercase rounded-md transition-all ${
+              isSignUp ? "bg-gold text-void" : "text-text-muted hover:text-text"
             }`}
           >
-            Sign up
+            Cadastrar
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div className="relative">
-            <Mail size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim" />
+            <Mail
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim"
+            />
             <input
               type="email"
               value={email}
-              onChange={e => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               required
-              className="w-full bg-card border border-border rounded-lg pl-9 pr-3 py-2.5 text-sm text-text placeholder:text-text-dim focus:outline-none focus:border-accent/40 transition-colors font-body"
+              className="w-full bg-card border border-border rounded-lg pl-11 pr-4 py-3.5 text-base text-text placeholder:text-text-dim focus:outline-none focus:border-gold/40 transition-colors font-body"
             />
           </div>
           <div className="relative">
-            <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim" />
+            <Lock
+              size={16}
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-text-dim"
+            />
             <input
               type="password"
               value={password}
-              onChange={e => setPassword(e.target.value)}
-              placeholder="Password"
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Senha"
               required
               minLength={6}
-              className="w-full bg-card border border-border rounded-lg pl-9 pr-3 py-2.5 text-sm text-text placeholder:text-text-dim focus:outline-none focus:border-accent/40 transition-colors font-body"
+              className="w-full bg-card border border-border rounded-lg pl-11 pr-4 py-3.5 text-base text-text placeholder:text-text-dim focus:outline-none focus:border-gold/40 transition-colors font-body"
             />
           </div>
 
@@ -121,7 +143,7 @@ export default function AuthPage() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-xs text-red font-mono"
+              className="text-sm text-red font-mono"
             >
               {error}
             </motion.p>
@@ -131,7 +153,7 @@ export default function AuthPage() {
             <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="text-xs text-green font-mono"
+              className="text-sm text-green font-mono"
             >
               {success}
             </motion.p>
@@ -140,14 +162,14 @@ export default function AuthPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full flex items-center justify-center gap-2 bg-accent text-void py-2.5 rounded-lg text-xs font-mono tracking-wider uppercase hover:bg-accent-dim transition-colors disabled:opacity-50"
+            className="w-full flex items-center justify-center gap-2.5 bg-gold text-void py-3.5 rounded-lg text-base font-mono tracking-wider uppercase hover:bg-gold-dim transition-colors disabled:opacity-50"
           >
             {loading ? (
-              <Loader2 size={14} className="animate-spin" />
+              <Loader2 size={16} className="animate-spin" />
             ) : (
               <>
-                {isSignUp ? 'Create account' : 'Sign in'}
-                <ArrowRight size={12} />
+                {isSignUp ? "Criar conta" : "Entrar"}
+                <ArrowRight size={14} />
               </>
             )}
           </button>
