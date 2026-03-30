@@ -2,8 +2,8 @@ import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { useAuth } from '../contexts/AuthContext';
-import { emailSchema, passwordSchema } from '../types/validation';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
+import { emailSchema, passwordSchema } from '../types/validation';
 
 export default function AuthPage() {
   const { signIn, signUp } = useAuth();
@@ -21,7 +21,6 @@ export default function AuthPage() {
     setSuccess('');
     setLoading(true);
 
-    const fn = isSignUp ? signUp : signIn;
     // Validate with Zod before calling Supabase
     const emailResult = emailSchema.safeParse(email);
     const passwordResult = passwordSchema.safeParse(password);

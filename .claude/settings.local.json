@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(tree:*)",
+      "Bash(findstr:*)",
+      "mcp__web-search-prime__web_search_prime",
+      "WebSearch",
+      "Bash(npm run build:*)",
+      "Bash(if not exist:*)",
+      "Bash(npm install:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(node:*)",
+      "Bash(npx tsc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git init:*)",
+      "Bash(git reset:*)",
+      "Bash(xxd:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(del:*)",
+      "mcp__web-reader__webReader",
+      "Bash(npm uninstall:*)",
+      "Bash(npx shadcn@latest init:*)"
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "MEMENTO — Media Tracker",
+  "short_name": "MEMENTO",
+  "description": "Personal media archive. Track films, TV, music, and books.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#e8c468",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/apple-touch-icon.svg",
+      "sizes": "180x180",
+      "type": "image/svg+xml"
+    }
+  ]
+}

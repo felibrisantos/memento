@@ -5,13 +5,20 @@ import { useCollection } from '../hooks/useCollection';
 import { getStatusesFor } from '../lib/storage';
 import SearchBar from '../components/SearchBar';
 import MediaCard from '../components/MediaCard';
-import type { Category } from '../types';
+import type { Category, Status, CollectionItem } from '../types';
+
+type SortOption = 'recent' | 'rating' | 'title' | 'year';
+
+interface CategoryInfo {
+  title: string;
+  noun: string;
+}
 
 interface CategoryPageProps {
   type: Category;
 }
 
-const categoryInfo: Record<Category, { title: string; noun: string }> = {
+const categoryInfo: Record<Category, CategoryInfo> = {
   movies: { title: 'Film', noun: 'film' },
   tvshows: { title: 'Television', noun: 'show' },
   albums: { title: 'Albums', noun: 'album' },
@@ -20,11 +27,11 @@ const categoryInfo: Record<Category, { title: string; noun: string }> = {
 
 export default function CategoryPage({ type }: CategoryPageProps) {
   const { collection, add, remove, update, isInCollection } = useCollection();
-  const items = collection[type] ?? [];
+  const items: CollectionItem[] = collection[type] ?? [];
   const info = categoryInfo[type];
   const availableStatuses = getStatusesFor(type);
-  const [filter, setFilter] = useState<string>('all');
-  const [sortBy, setSortBy] = useState<string>('recent');
+  const [filter, setFilter] = useState<Status | 'all'>('all');
+  const [sortBy, setSortBy] = useState<SortOption>('recent');
 
   const filtered = useMemo(() => {
     let list = filter === 'all' ? items : items.filter(i => i.status === filter);
@@ -83,7 +90,7 @@ export default function CategoryPage({ type }: CategoryPageProps) {
         <div className="flex gap-3">
           <select
             value={filter}
-            onChange={e => setFilter(e.target.value)}
+            onChange={e => setFilter(e.target.value as Status | 'all')}
             className="bg-card border border-border rounded-lg px-3 py-2.5 text-xs text-text-muted focus:outline-none focus:border-accent/40 transition-colors font-mono appearance-none cursor-pointer"
             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: '28px' }}
           >
@@ -94,7 +101,7 @@ export default function CategoryPage({ type }: CategoryPageProps) {
           </select>
           <select
             value={sortBy}
-            onChange={e => setSortBy(e.target.value)}
+            onChange={e => setSortBy(e.target.value as SortOption)}
             className="bg-card border border-border rounded-lg px-3 py-2.5 text-xs text-text-muted focus:outline-none focus:border-accent/40 transition-colors font-mono appearance-none cursor-pointer"
             style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7670' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: '28px' }}
           >
